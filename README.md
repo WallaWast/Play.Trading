@@ -4,7 +4,7 @@ Play Economy Trading microservice
 ## Build the docker image
 ```powershell
 $version="1.0.3"
-$env:GH_OWNER="WallaWast"
+$env:GH_OWNER="wallawastoo"
 $env:GH_PAT="[PAT HERE]"
 $appname="waplayeconomy"
 $resourcegroup="playeconomy"
