@@ -45,11 +45,6 @@ az identity federated-credential create --name $namespace --identity-name $names
 kubectl create namespace $namespace
 ```
 
-## Create the Kubernetes pod
-```powershell
-kubectl apply -f .\kubernetes\trading.yaml -n $namespace
-```
-
 To check the pods running
 ```powershell
 kubectl get pods -n $namespace
@@ -59,3 +54,19 @@ kubectl get pods -n $namespace
 ```powershell
 kubectl get services -n $namespace
 ```
+
+## Install the Helm chart
+```powershell
+$helmUser=[guid]::Empty.Guid
+$helmPassword=az acr login --name $appname --expose-token --output tsv --query accessToken
+helm registry login "$appname.azurecr.io" --username $helmUser --password $helmPassword
+
+$chartVersion="0.1.0"
+helm upgrade trading-service oci://$appname.azurecr.io/helm/microservice --version $chartVersion -f .\helm\values.yaml -n $namespace --install
+```
+
+## Required repository secrets for GitHub workflow
+GH_PAT: Created in GitHub user profile --> Settings --> Developer settings --> Personal access token
+AZURE_CLIENT_ID: From AAD App Registration
+AZURE_SUBSCRIPTION_ID: From Azure Portal subscription
+AZURE_TENANT_ID: From AAD properties page
