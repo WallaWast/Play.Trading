@@ -115,9 +115,9 @@ namespace Play.Trading.Service
                 });
 
                 configure.AddConsumers(Assembly.GetEntryAssembly());
-                configure.AddSagaStateMachine<PurchaseStateMachine, PurchaseState>(sagaConfigurator =>
+                configure.AddSagaStateMachine<PurchaseStateMachine, PurchaseState>((context, cfg) =>
                 {
-                    sagaConfigurator.UseInMemoryOutbox();
+                    cfg.UseInMemoryOutbox(context);
                 })
                 .MongoDbRepository(r =>
                 {
